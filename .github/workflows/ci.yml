@@ -14,7 +14,7 @@ jobs:
     name: TypeScript + CDK synth
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -35,7 +35,7 @@ jobs:
     name: Python (agent-runtime)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup Python
         uses: actions/setup-python@v5
