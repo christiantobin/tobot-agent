@@ -1,0 +1,38 @@
+name: Feature request
+description: Propose a new capability or improvement.
+title: "[Feature] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        For larger features (new front-door adapter, changes to the tool taxonomy, changes to public construct APIs), please open this issue *before* implementing — alignment first saves churn.
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What's the user-facing problem? Who feels it? When?
+      placeholder: Tool authors who use Cloudflare Workers can't easily register their MCP server because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+      description: How would you solve it? Sketch the API or workflow if you can.
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Other shapes you thought about and why you didn't pick them.
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope check
+      description: Is this v1, v1.x roadmap, or beyond? See SPEC.md for the current scope picture.

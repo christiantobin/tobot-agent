@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/christiantobin/tobot-agent/security/advisories/new
+    about: Please report security issues privately, not via public issues. See SECURITY.md.
+  - name: Question or discussion
+    url: https://github.com/christiantobin/tobot-agent/discussions
+    about: For open-ended questions, design discussions, or "how do I…" use Discussions instead of an issue.

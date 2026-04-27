@@ -1,0 +1,72 @@
+name: Bug report
+description: Something is broken or behaves unexpectedly.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to file a bug. Before submitting, please search existing issues to see if it has already been reported.
+
+        For security vulnerabilities, do NOT use this form — see SECURITY.md.
+
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened
+      description: A clear description of the bug.
+      placeholder: When I run `cdk deploy`, the AgentCore stack fails with...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+      placeholder: The stack should deploy successfully.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps that reliably trigger the bug.
+      placeholder: |
+        1. `git checkout abc123`
+        2. `npm install`
+        3. `npx cdk deploy TobotAgent-AgentCore-dev`
+    validations:
+      required: true
+
+  - type: input
+    id: version
+    attributes:
+      label: Tobot Agent version / commit SHA
+      placeholder: main @ abc1234
+    validations:
+      required: true
+
+  - type: input
+    id: aws-region
+    attributes:
+      label: AWS region
+      placeholder: us-west-2
+
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs or error output
+      description: CloudFormation events, Lambda CloudWatch logs, `cdk` output. Please redact account IDs and secrets.
+      render: shell
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Anything else worth knowing — Node version, Python version, CDK version, OS.
+      placeholder: |
+        Node 20.11
+        Python 3.12
+        CDK 2.140
+        macOS 14.4
