@@ -1,0 +1,12 @@
+# Tobot Agent — identity provider configuration.
+#
+# Default: CDK provisions a Cognito User Pool. Zero external dependencies —
+# `cdk deploy` works on day one.
+#
+# To use your existing IdP (Okta, Entra ID, Auth0, etc.), set:
+#   provider: oidc
+#   issuer_url: https://your-tenant.example.com
+#   audience: tobot-agent
+# CDK will skip Cognito and wire Gateway to your issuer instead.
+
+provider: cognito

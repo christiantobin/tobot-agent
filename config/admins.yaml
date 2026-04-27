@@ -1,0 +1,10 @@
+# Tobot Agent — static admin user IDs per adapter.
+#
+# Admins bypass the channel/user allowlist and have access to admin tools
+# (allowlist management, scope override). Static by design — admin rotation
+# should be auditable via git, not a runtime call.
+#
+# v0 scaffold — empty. Add your own user IDs when you deploy.
+
+slack: []      # e.g. ["U02512X3399"]
+webhook: []    # e.g. ["admin@example.com"]

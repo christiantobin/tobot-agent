@@ -1,0 +1,38 @@
+# Node
+node_modules/
+*.log
+npm-debug.log*
+
+# CDK
+cdk.out/
+cdk.context.json
+.cdk.staging/
+
+# TypeScript
+*.js
+*.d.ts
+!jest.config.js
+!.eslintrc.js
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+
+# Editor / OS
+.vscode/
+.idea/
+.DS_Store
+
+# Local config overrides (operators may keep their own)
+config/*.local.yaml
+config/*.local.yml
+
+# Secrets — should never be in repo, but belt-and-suspenders
+*.pem
+*.key
+.env
+.env.*

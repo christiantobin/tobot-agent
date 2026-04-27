@@ -1,0 +1,15 @@
+# Tobot Agent — model configuration.
+#
+# These are pinned Bedrock model IDs. "Latest" is a moving target — bump these
+# strings + redeploy when AWS releases a newer model. There is no Bedrock
+# equivalent of `claude-latest`.
+
+# Main agent loop. Default: latest available Claude on Bedrock (Opus 4.7).
+# Cost-conscious operators can swap to claude-sonnet-4-6 — about 1/5 the price
+# at ~80% of the quality for typical agent loops.
+agent: us.anthropic.claude-opus-4-7
+
+# Engaged-thread classifier ("is this user message addressed to the bot?").
+# Haiku is the right tool for sub-100-token classification. Don't swap unless
+# you've measured a quality gap.
+classifier: us.anthropic.claude-haiku-4-5-20251001

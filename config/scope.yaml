@@ -1,0 +1,25 @@
+# Tobot Agent — scope registry.
+#
+# Maps {adapter, channel_id} → set of tool tags the agent is allowed to see.
+# Applied at list_tools() time, BEFORE the model sees the toolset. Out-of-scope
+# tools never enter the model's context — this is both the authorization
+# boundary and the prompt-injection containment boundary.
+#
+# v0 scaffold — empty. Phase 1+ adds real channel mappings.
+#
+# Example shape:
+#   slack:
+#     "C0ABC1234":          # #agent-channel
+#       - read
+#       - knowledge
+#     "C0XYZ9876":          # #incident-response
+#       - read
+#       - knowledge
+#       - write              # write tools available, with confirmation guard
+#       - destructive
+#   webhook:
+#     "default":
+#       - read
+
+slack: {}
+webhook: {}
