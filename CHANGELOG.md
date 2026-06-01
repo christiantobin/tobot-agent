@@ -24,4 +24,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - First-run scripts: `scripts/bootstrap-secrets.sh` and `scripts/smoke-test.sh`.
 - `docs/architecture.md` quick-tour.
 
+### Changed
+
+- Dependency updates (Dependabot): npm `@aws-sdk/*` → 3.1058, `@types/node` → 25, `jest`/`@types/jest` → 30, `esbuild` → 0.28; pip `boto3` → 1.43, `strands-agents` → 1.42, `bedrock-agentcore` → 1.12, `pyyaml` → 6.0.3, `pytest` → 9; GitHub Actions (`checkout`, `setup-node`, `setup-python`) → v6 (SHA-pinned). TypeScript held at 5.x — the 6.0 bump breaks `@types` resolution across the suite and needs a separate migration.
+
 [Unreleased]: https://github.com/christiantobin/tobot-agent/commits/main
