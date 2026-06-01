@@ -58,6 +58,7 @@ After the deploy:
 
 1. **Populate the secrets** (CDK creates empty shells). The stack outputs
    print the ARNs:
+
    ```bash
    aws secretsmanager put-secret-value \
      --secret-id <SlackSigningSecretArn>    --secret-string '<from-slack-app>'
@@ -74,8 +75,8 @@ After the deploy:
      optional but recommended; enables engaged-thread following so
      users don't have to re-@mention you for every follow-up.
 
-   After install, grab the bot user id from the app's *Basic
-   Information* page and redeploy with `-c bot_user_id=U0XYZ...` so the
+   After install, grab the bot user id from the app's _Basic
+   Information_ page and redeploy with `-c bot_user_id=U0XYZ...` so the
    engaged-thread dedup is precise (without it, dedup falls back to a
    heuristic that occasionally drops thread replies containing
    non-bot user mentions).
@@ -126,7 +127,9 @@ new TobotGatewayTarget(this, 'MyTeamsTools', {
   gateway,
   kind: 'lambda',
   lambdaFunction: myLambda,
-  toolSchema: ToolSchema.fromInline({ /* ... */ }),
+  toolSchema: ToolSchema.fromInline({
+    /* ... */
+  }),
 });
 ```
 
@@ -173,14 +176,14 @@ auto-grantable, so typos don't slip into deploys.
 
 ## Configuration files
 
-| file | purpose |
-| ---- | ------- |
+| file                       | purpose                                                |
+| -------------------------- | ------------------------------------------------------ |
 | `config/capabilities.yaml` | Capability → role-ARN bindings + auto-grant-reads flag |
-| `config/admins.yaml` | Static admin user IDs per adapter |
-| `config/models.yaml` | Bedrock model IDs (agent + classifier) |
-| `config/identity.yaml` | Cognito (default) vs OIDC (toggle) |
-| `config/scope.yaml` | (Reserved for cross-tool scope mapping, Phase 2c) |
-| `config/VOCAB.md` | Capability vocabulary reference |
+| `config/admins.yaml`       | Static admin user IDs per adapter                      |
+| `config/models.yaml`       | Bedrock model IDs (agent + classifier)                 |
+| `config/identity.yaml`     | Cognito (default) vs OIDC (toggle)                     |
+| `config/scope.yaml`        | (Reserved for cross-tool scope mapping, Phase 2c)      |
+| `config/VOCAB.md`          | Capability vocabulary reference                        |
 
 ## Repo layout
 

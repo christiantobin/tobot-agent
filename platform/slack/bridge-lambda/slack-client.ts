@@ -45,7 +45,9 @@ export interface UpdateMessageInput {
   readonly text: string;
 }
 
-export async function updateMessage(input: UpdateMessageInput): Promise<{ ok: boolean; error?: string }> {
+export async function updateMessage(
+  input: UpdateMessageInput,
+): Promise<{ ok: boolean; error?: string }> {
   const resp = await fetch('https://slack.com/api/chat.update', {
     method: 'POST',
     headers: {
@@ -82,7 +84,9 @@ export async function addReaction(input: ReactionInput): Promise<{ ok: boolean; 
   return (await resp.json()) as { ok: boolean; error?: string };
 }
 
-export async function removeReaction(input: ReactionInput): Promise<{ ok: boolean; error?: string }> {
+export async function removeReaction(
+  input: ReactionInput,
+): Promise<{ ok: boolean; error?: string }> {
   const resp = await fetch('https://slack.com/api/reactions.remove', {
     method: 'POST',
     headers: {

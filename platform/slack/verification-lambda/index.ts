@@ -1,12 +1,6 @@
 import { SQSClient, SendMessageCommand } from '@aws-sdk/client-sqs';
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-} from '@aws-sdk/client-secrets-manager';
-import type {
-  APIGatewayProxyEventV2,
-  APIGatewayProxyStructuredResultV2,
-} from 'aws-lambda';
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
+import type { APIGatewayProxyEventV2, APIGatewayProxyStructuredResultV2 } from 'aws-lambda';
 import { verifySlackSignature } from './slack-signature';
 import { isAdmin, isAllowlisted } from './allowlist-check';
 import { getEngagement } from './engaged-threads';
@@ -127,4 +121,3 @@ export async function handler(
   );
   return { statusCode: 200, body: '' };
 }
-

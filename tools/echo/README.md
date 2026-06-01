@@ -6,10 +6,10 @@ as the starting point for any tool that doesn't touch AWS.
 
 ## What it exposes
 
-| function | shape | when to call |
-| -------- | ----- | ------------ |
-| `echo`   | `(text: str) -> {"echo": str}` | User asks the bot to repeat/echo something, or to confirm it's working. |
-| `whoami` | `() -> {"principal_id", "scope", "is_admin"}` | User asks "who am I to you?" / "am I an admin?". |
+| function | shape                                         | when to call                                                            |
+| -------- | --------------------------------------------- | ----------------------------------------------------------------------- |
+| `echo`   | `(text: str) -> {"echo": str}`                | User asks the bot to repeat/echo something, or to confirm it's working. |
+| `whoami` | `() -> {"principal_id", "scope", "is_admin"}` | User asks "who am I to you?" / "am I an admin?".                        |
 
 ## Worth studying
 

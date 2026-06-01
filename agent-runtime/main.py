@@ -34,7 +34,8 @@ from strands.models.bedrock import BedrockModel
 
 from admin_tools import ADMIN_TOOLS
 from gateway_tools import gateway_tools
-from invocation_context import invocation_context, reset as reset_invocation_context
+from invocation_context import invocation_context
+from invocation_context import reset as reset_invocation_context
 from session_store import load_history, save_history
 from tools.discovery import AUTO_TOOLS, filter_for_invocation
 

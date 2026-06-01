@@ -5,7 +5,7 @@ Thanks for your interest. Tobot Agent is an open template for an AWS-hosted, MCP
 ## Ways to contribute
 
 - **Report a bug.** Open an issue using the bug-report template.
-- **Request a feature.** Open an issue using the feature-request template. For larger changes, please open the issue *first* — alignment before implementation saves everyone time.
+- **Request a feature.** Open an issue using the feature-request template. For larger changes, please open the issue _first_ — alignment before implementation saves everyone time.
 - **Add a front-door adapter.** Teams, Jira-as-trigger, WhatsApp, Discord — see `docs/adding-an-adapter.md` (coming soon) or model on the Slack adapter under `platform/`.
 - **Add a reference tool.** New entries under `examples/` are great for showing off patterns. Keep them small and self-contained.
 - **Improve docs.** README, SPEC, in-code comments — clearer is always better than longer.
@@ -31,7 +31,7 @@ python3 -m venv .venv
 ## Pull request guidelines
 
 - Open against `main`. Keep PRs focused — one concern per PR.
-- The PR description should answer: *what changed*, *why*, and *how it was tested*.
+- The PR description should answer: _what changed_, _why_, and _how it was tested_.
 - CI must pass (TypeScript type-check, `cdk synth`, any tests). PRs with red CI will be asked to fix before review.
 - Avoid drive-by refactors in feature PRs — open a separate PR for cleanup.
 - For changes that affect public surface (`config/` shape, `TobotGatewayTarget` construct API, adapter contract), please open a discussion or issue first.
@@ -40,7 +40,7 @@ python3 -m venv .venv
 
 - **TypeScript** (CDK, adapter Lambdas): match the existing style. Strict mode is on. No `any` without comment.
 - **Python** (agent runtime): PEP 8, type hints required, `from __future__ import annotations` at the top.
-- Comments explain *why*, not *what*. Skip them when the code is self-evident.
+- Comments explain _why_, not _what_. Skip them when the code is self-evident.
 
 ## Commit messages
 

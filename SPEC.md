@@ -39,7 +39,7 @@ Three planes, three deploy cadences:
 
 - DynamoDB session table, thread-keyed, 7-day TTL. Text turns only (no intermediate tool blocks).
 - **No long-term conversational memory in v1.** Operational agents do worse with semantic recall, not better — see SPEC §"Why no long-term memory."
-- Company knowledge lives as a *tool* (e.g. a Bedrock Knowledge Bases MCP target), not as a memory subsystem. Knowledge stays in the company's existing systems where it can be governed, versioned, and access-controlled.
+- Company knowledge lives as a _tool_ (e.g. a Bedrock Knowledge Bases MCP target), not as a memory subsystem. Knowledge stays in the company's existing systems where it can be governed, versioned, and access-controlled.
 
 ## Tools
 
@@ -125,6 +125,6 @@ Long-term semantic memory is double-edged for operational agents:
 - Surprising behavior: users can't predict when memory fires.
 - Curation debt: memories rot, nobody owns expiring them.
 
-For an SRE-style agent doing discrete request → investigate → reply work, **thread-scoped session history is sufficient**. The agent "knows the company" by *retrieving* from knowledge tools (which the company governs at the source), not by *remembering* prior conversations.
+For an SRE-style agent doing discrete request → investigate → reply work, **thread-scoped session history is sufficient**. The agent "knows the company" by _retrieving_ from knowledge tools (which the company governs at the source), not by _remembering_ prior conversations.
 
 If a future adopter genuinely needs long-term memory for a companion-agent use case, AgentCore Memory can be enabled via config flag — the architecture allows it without breaking changes.

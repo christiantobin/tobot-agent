@@ -1,29 +1,29 @@
 version: 2
 updates:
   - package-ecosystem: npm
-    directory: "/"
+    directory: '/'
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
     groups:
       aws-cdk:
         patterns:
-          - "aws-cdk*"
-          - "@aws-cdk/*"
+          - 'aws-cdk*'
+          - '@aws-cdk/*'
       aws-sdk:
         patterns:
-          - "@aws-sdk/*"
+          - '@aws-sdk/*'
       types:
         patterns:
-          - "@types/*"
+          - '@types/*'
 
   - package-ecosystem: pip
-    directory: "/agent-runtime"
+    directory: '/agent-runtime'
     schedule:
       interval: weekly
     open-pull-requests-limit: 5
 
   - package-ecosystem: github-actions
-    directory: "/"
+    directory: '/'
     schedule:
       interval: monthly

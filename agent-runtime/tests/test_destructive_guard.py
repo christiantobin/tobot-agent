@@ -8,7 +8,7 @@ so the model sees the same tool.
 import pytest
 from strands import tool
 
-from destructive_guard import wrap_destructive, _CONFIRMATION_RESPONSE
+from destructive_guard import _CONFIRMATION_RESPONSE, wrap_destructive
 from invocation_context import invocation_context, reset
 
 

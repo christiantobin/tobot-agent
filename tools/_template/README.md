@@ -5,8 +5,8 @@ who want the deep version can read `tool.py`.
 
 ## What it exposes
 
-| function | shape | when to call |
-| -------- | ----- | ------------ |
+| function | shape                 | when to call                          |
+| -------- | --------------------- | ------------------------------------- |
 | `hello`  | `(name: str) -> dict` | Replace with your actual entrypoints. |
 
 ## Setup

@@ -11,16 +11,12 @@ describe('isExplicitConfirmation', () => {
     },
   );
 
-  it.each([
-    'confirm the deletion',
-    'yes confirm',
-    'please confirm this',
-    'confirmed',
-    'do it',
-    '',
-  ])('rejects %j', (text) => {
-    expect(isExplicitConfirmation(text)).toBe(false);
-  });
+  it.each(['confirm the deletion', 'yes confirm', 'please confirm this', 'confirmed', 'do it', ''])(
+    'rejects %j',
+    (text) => {
+      expect(isExplicitConfirmation(text)).toBe(false);
+    },
+  );
 });
 
 describe('stripBotMention', () => {

@@ -20,9 +20,7 @@ describe('chooseRoute', () => {
   });
 
   it('always queues an app_mention', async () => {
-    expect(await chooseRoute({ type: 'app_mention', text: 'hi', ts: '1' }, deps())).toBe(
-      'queue',
-    );
+    expect(await chooseRoute({ type: 'app_mention', text: 'hi', ts: '1' }, deps())).toBe('queue');
   });
 
   it('drops a top-level (non-thread) message', async () => {

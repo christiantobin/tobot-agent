@@ -68,9 +68,7 @@ describe('resolveAssumeRoleArns', () => {
   });
 
   it('throws on an unbound non-read capability', () => {
-    expect(() => resolveAssumeRoleArns(['lambda:invoke:fn'], registry)).toThrow(
-      /not bound/,
-    );
+    expect(() => resolveAssumeRoleArns(['lambda:invoke:fn'], registry)).toThrow(/not bound/);
   });
 
   it('requires binding for a read when auto_grant_reads is off', () => {

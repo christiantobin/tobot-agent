@@ -41,10 +41,7 @@ async function existsInAllowlist(
  * True iff BOTH the user and the channel have explicit allowlist entries.
  * Admins bypass this check and should be short-circuited before calling.
  */
-export async function isAllowlisted(
-  userId: string,
-  channelId: string,
-): Promise<boolean> {
+export async function isAllowlisted(userId: string, channelId: string): Promise<boolean> {
   const [userAllowed, channelAllowed] = await Promise.all([
     existsInAllowlist('USER', userId),
     existsInAllowlist('CHANNEL', channelId),

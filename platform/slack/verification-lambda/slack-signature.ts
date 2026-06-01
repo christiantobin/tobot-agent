@@ -24,9 +24,7 @@ export interface VerifySlackSignatureResult {
 /** Slack's documented replay-window allowance is 5 minutes. */
 const MAX_TIMESTAMP_SKEW_SECONDS = 5 * 60;
 
-export function verifySlackSignature(
-  input: VerifySlackSignatureInput,
-): VerifySlackSignatureResult {
+export function verifySlackSignature(input: VerifySlackSignatureInput): VerifySlackSignatureResult {
   const { body, timestamp, signature, signingSecret } = input;
 
   if (!timestamp) return { valid: false, reason: 'missing timestamp' };

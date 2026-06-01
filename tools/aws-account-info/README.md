@@ -7,10 +7,10 @@ credentials.
 
 ## What it exposes
 
-| function | shape | when to call |
-| -------- | ----- | ------------ |
-| `who_am_i` | `() -> {success, account, arn, user_id}` | "What account are we in?" / "Who does the bot run as?" |
-| `list_log_groups` | `(prefix="", limit=50) -> {success, log_groups, count, truncated}` | "What log groups exist?" / find a group by prefix. |
+| function          | shape                                                              | when to call                                           |
+| ----------------- | ------------------------------------------------------------------ | ------------------------------------------------------ |
+| `who_am_i`        | `() -> {success, account, arn, user_id}`                           | "What account are we in?" / "Who does the bot run as?" |
+| `list_log_groups` | `(prefix="", limit=50) -> {success, log_groups, count, truncated}` | "What log groups exist?" / find a group by prefix.     |
 
 ## Worth studying
 

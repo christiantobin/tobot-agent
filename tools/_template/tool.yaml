@@ -7,7 +7,7 @@
 
 # Required ====================================================================
 
-name: my-tool                    # kebab-case. Should match the directory name.
+name: my-tool # kebab-case. Should match the directory name.
 version: 0.1.0
 description: |
   Short paragraph in plain English. Write it for the MODEL — it's what

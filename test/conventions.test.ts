@@ -1,7 +1,4 @@
-import {
-  slackAllowlistTableName,
-  engagedThreadsTableName,
-} from '../lib/conventions';
+import { slackAllowlistTableName, engagedThreadsTableName } from '../lib/conventions';
 
 describe('resource naming conventions', () => {
   it('builds a stage-suffixed allowlist table name', () => {

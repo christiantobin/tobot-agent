@@ -1,7 +1,4 @@
-import {
-  SecretsManagerClient,
-  GetSecretValueCommand,
-} from '@aws-sdk/client-secrets-manager';
+import { SecretsManagerClient, GetSecretValueCommand } from '@aws-sdk/client-secrets-manager';
 import {
   BedrockAgentCoreClient,
   InvokeAgentRuntimeCommand,
@@ -102,9 +99,7 @@ async function processRecord(record: SQSRecord, botToken: string): Promise<void>
       removeReaction({ botToken, channel, ts: userMessageTs, name: THINKING_REACTION }).catch(
         () => undefined,
       ),
-      addReaction({ botToken, channel, ts: userMessageTs, name: finalName }).catch(
-        () => undefined,
-      ),
+      addReaction({ botToken, channel, ts: userMessageTs, name: finalName }).catch(() => undefined),
     ]);
   };
 

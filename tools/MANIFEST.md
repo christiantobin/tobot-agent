@@ -16,19 +16,20 @@ Every directory under `tools/` that ships a Tobot Agent tool MUST contain a
 ```yaml
 # Required ----------------------------------------------------------------
 
-name: my-tool                       # kebab-case, must match the directory name
-version: 0.1.0                      # semver
-description: |                      # human-readable AND model-readable —
+name: my-tool # kebab-case, must match the directory name
+version: 0.1.0 # semver
+description: | # human-readable AND model-readable —
   This is what the agent sees in its toolset. Write it for the model:
   what does this tool let me do, and when should I reach for it?
 
 # How the tool ships in the container -------------------------------------
 
-module: my_tool                     # snake_case Python module name (the .py
-                                    # file for simple-form tools, or the
-                                    # importable package name for package-form)
+module:
+  my_tool # snake_case Python module name (the .py
+  # file for simple-form tools, or the
+  # importable package name for package-form)
 
-entrypoints:                        # @strands.tool functions to expose
+entrypoints: # @strands.tool functions to expose
   - do_the_thing
   - get_the_other_thing
 
@@ -59,7 +60,7 @@ secrets:
 # ENV VARS — literal (non-secret) env vars injected into the runtime.
 env:
   MY_TOOL_API_BASE: https://api.example.com
-  MY_TOOL_TIMEOUT: "30"
+  MY_TOOL_TIMEOUT: '30'
 
 # TAGS — invocation-time semantics. Currently recognized:
 #   read         — informational; default if no tags set.
@@ -88,7 +89,7 @@ auto_register: true
 # was on the inbound event. Make these match your adapter's convention.
 access:
   scopes:
-    - C0ABC1234   # a Slack channel id, for example
+    - C0ABC1234 # a Slack channel id, for example
 ```
 
 ---

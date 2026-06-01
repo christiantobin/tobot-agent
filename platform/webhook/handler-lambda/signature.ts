@@ -27,9 +27,7 @@ export interface VerifySignatureResult {
 
 const MAX_TIMESTAMP_SKEW_SECONDS = 5 * 60;
 
-export function verifyWebhookSignature(
-  input: VerifySignatureInput,
-): VerifySignatureResult {
+export function verifyWebhookSignature(input: VerifySignatureInput): VerifySignatureResult {
   const { body, timestamp, signature, signingSecret } = input;
 
   if (!timestamp) return { valid: false, reason: 'missing timestamp' };

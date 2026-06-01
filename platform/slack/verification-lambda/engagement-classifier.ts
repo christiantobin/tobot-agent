@@ -1,7 +1,4 @@
-import {
-  BedrockRuntimeClient,
-  InvokeModelCommand,
-} from '@aws-sdk/client-bedrock-runtime';
+import { BedrockRuntimeClient, InvokeModelCommand } from '@aws-sdk/client-bedrock-runtime';
 
 const bedrock = new BedrockRuntimeClient({});
 
@@ -70,10 +67,7 @@ export async function isAddressedToBot(input: {
     // Bedrock errors are not fatal — drop the message rather than ack
     // a noisy thread continuation. Log so operators can spot a
     // consistently broken classifier and fix it.
-    console.warn(
-      'engagement classifier failed:',
-      err instanceof Error ? err.message : String(err),
-    );
+    console.warn('engagement classifier failed:', err instanceof Error ? err.message : String(err));
     return false;
   }
 }

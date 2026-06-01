@@ -3,7 +3,7 @@
 We inject the registry directly (bypassing the YAML file) and stub STS,
 so these tests don't touch disk or the network.
 """
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 import boto3
 import pytest
@@ -73,7 +73,7 @@ def test_bound_write_capability_assumes_role(monkeypatch):
                     "AccessKeyId": "AKIA",
                     "SecretAccessKey": "secret",
                     "SessionToken": "token",
-                    "Expiration": datetime.now(timezone.utc) + timedelta(hours=1),
+                    "Expiration": datetime.now(UTC) + timedelta(hours=1),
                 }
             }
 
@@ -99,7 +99,7 @@ def test_assumed_session_is_cached(monkeypatch):
                     "AccessKeyId": "AKIA",
                     "SecretAccessKey": "secret",
                     "SessionToken": "token",
-                    "Expiration": datetime.now(timezone.utc) + timedelta(hours=1),
+                    "Expiration": datetime.now(UTC) + timedelta(hours=1),
                 }
             }
 

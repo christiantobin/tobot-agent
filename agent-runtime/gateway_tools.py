@@ -42,8 +42,9 @@ import threading
 import time
 import urllib.parse
 import urllib.request
+from collections.abc import Iterator
 from contextlib import ExitStack, contextmanager
-from typing import Any, Iterator
+from typing import Any
 
 log = logging.getLogger(__name__)
 

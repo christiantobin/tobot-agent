@@ -30,20 +30,20 @@ vocabulary, ecosystem tools just work.
 
 ## Common capabilities
 
-| name                              | shape    | typical IAM (when bound)                                      |
-| --------------------------------- | -------- | ------------------------------------------------------------- |
-| `iot:read`                        | service  | iot:Describe*, iot:List*, iot:Get*                             |
-| `iot:write`                       | service  | iot:CreateThing, iot:UpdateThing, iot:AttachPolicy, etc.       |
-| `iot:destructive`                 | service  | iot:DeleteThing, iot:DeleteCertificate                         |
-| `s3:read:<bucket>`                | scoped   | s3:GetObject, s3:ListBucket on the named bucket               |
-| `s3:write:<bucket>`               | scoped   | s3:PutObject, s3:DeleteObject on the named bucket             |
-| `dynamodb:read:<table>`           | scoped   | dynamodb:GetItem, dynamodb:Query, dynamodb:Scan                |
-| `dynamodb:write:<table>`          | scoped   | dynamodb:PutItem, dynamodb:UpdateItem, dynamodb:DeleteItem     |
-| `lambda:invoke:<function>`        | scoped   | lambda:InvokeFunction on the named function                   |
-| `secretsmanager:read:<prefix>`    | scoped   | secretsmanager:GetSecretValue on secrets with the prefix      |
-| `cloudwatch:read`                 | service  | logs:DescribeLogGroups, logs:FilterLogEvents, logs:GetLogEvents |
-| `athena:query:<workgroup>`        | scoped   | athena:StartQueryExecution + friends on a workgroup           |
-| `glue:read`                       | service  | glue:GetDatabase, glue:GetTable, glue:GetPartitions            |
+| name                           | shape   | typical IAM (when bound)                                        |
+| ------------------------------ | ------- | --------------------------------------------------------------- |
+| `iot:read`                     | service | iot:Describe*, iot:List*, iot:Get\*                             |
+| `iot:write`                    | service | iot:CreateThing, iot:UpdateThing, iot:AttachPolicy, etc.        |
+| `iot:destructive`              | service | iot:DeleteThing, iot:DeleteCertificate                          |
+| `s3:read:<bucket>`             | scoped  | s3:GetObject, s3:ListBucket on the named bucket                 |
+| `s3:write:<bucket>`            | scoped  | s3:PutObject, s3:DeleteObject on the named bucket               |
+| `dynamodb:read:<table>`        | scoped  | dynamodb:GetItem, dynamodb:Query, dynamodb:Scan                 |
+| `dynamodb:write:<table>`       | scoped  | dynamodb:PutItem, dynamodb:UpdateItem, dynamodb:DeleteItem      |
+| `lambda:invoke:<function>`     | scoped  | lambda:InvokeFunction on the named function                     |
+| `secretsmanager:read:<prefix>` | scoped  | secretsmanager:GetSecretValue on secrets with the prefix        |
+| `cloudwatch:read`              | service | logs:DescribeLogGroups, logs:FilterLogEvents, logs:GetLogEvents |
+| `athena:query:<workgroup>`     | scoped  | athena:StartQueryExecution + friends on a workgroup             |
+| `glue:read`                    | service | glue:GetDatabase, glue:GetTable, glue:GetPartitions             |
 
 ## How "auto-grant reads" interacts
 

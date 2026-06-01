@@ -109,10 +109,7 @@ export class TobotGatewayTarget extends Construct {
 
     const targetConfiguration =
       props.kind === 'lambda'
-        ? agentcore.LambdaTargetConfiguration.create(
-            props.lambdaFunction,
-            props.toolSchema,
-          )
+        ? agentcore.LambdaTargetConfiguration.create(props.lambdaFunction, props.toolSchema)
         : props.kind === 'openapi'
           ? agentcore.OpenApiTargetConfiguration.create(
               props.apiSchema,

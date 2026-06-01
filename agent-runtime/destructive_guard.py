@@ -25,7 +25,6 @@ from strands import tool as _strands_tool
 
 from invocation_context import invocation_context
 
-
 _CONFIRMATION_RESPONSE: dict[str, Any] = {
     "requires_confirmation": True,
     "reason": (

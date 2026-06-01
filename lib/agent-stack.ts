@@ -151,12 +151,7 @@ export class AgentStack extends cdk.Stack {
     execRole.addToPrincipalPolicy(
       new iam.PolicyStatement({
         effect: iam.Effect.ALLOW,
-        actions: [
-          'dynamodb:GetItem',
-          'dynamodb:PutItem',
-          'dynamodb:DeleteItem',
-          'dynamodb:Query',
-        ],
+        actions: ['dynamodb:GetItem', 'dynamodb:PutItem', 'dynamodb:DeleteItem', 'dynamodb:Query'],
         resources: [allowlistTableArn],
       }),
     );

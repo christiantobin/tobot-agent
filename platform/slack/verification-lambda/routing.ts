@@ -41,10 +41,7 @@ function escapeRegex(s: string): string {
  * agent isn't double-invoked. With BOT_USER_ID set the match is exact;
  * otherwise any `<@U...>` is treated as a likely bot mention.
  */
-export async function chooseRoute(
-  ev: RoutableEvent,
-  deps: RoutingDeps,
-): Promise<'queue' | 'drop'> {
+export async function chooseRoute(ev: RoutableEvent, deps: RoutingDeps): Promise<'queue' | 'drop'> {
   if (ev.type === 'app_mention') return 'queue';
 
   if (ev.type === 'message') {
@@ -55,9 +52,7 @@ export async function chooseRoute(
     if (!text) return 'drop';
 
     const botUserId = process.env.BOT_USER_ID;
-    const mentionPattern = botUserId
-      ? new RegExp(`<@${escapeRegex(botUserId)}>`)
-      : /<@[A-Z0-9]+>/;
+    const mentionPattern = botUserId ? new RegExp(`<@${escapeRegex(botUserId)}>`) : /<@[A-Z0-9]+>/;
     if (mentionPattern.test(text)) return 'drop';
 
     const { engaged, previousBotReply } = await deps.getEngagement(threadTs);

@@ -116,9 +116,7 @@ function parseIam(value: unknown, manifestPath: string): ManifestIamStatement[] 
       ? e.resources.filter((x): x is string => typeof x === 'string')
       : [];
     if (actions.length === 0 || resources.length === 0) {
-      throw new Error(
-        `${manifestPath}: iam[${idx}] needs non-empty actions[] and resources[]`,
-      );
+      throw new Error(`${manifestPath}: iam[${idx}] needs non-empty actions[] and resources[]`);
     }
     return { actions, resources };
   });

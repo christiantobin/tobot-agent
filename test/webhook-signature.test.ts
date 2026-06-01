@@ -39,7 +39,8 @@ describe('verifyWebhookSignature', () => {
   it('requires the v1= prefix (rejects Slack-style v0=)', () => {
     const body = 'x';
     const ts = now();
-    const slackStyle = 'v0=' + createHmac('sha256', SECRET).update(`v1:${ts}:${body}`).digest('hex');
+    const slackStyle =
+      'v0=' + createHmac('sha256', SECRET).update(`v1:${ts}:${body}`).digest('hex');
     const res = verifyWebhookSignature({
       body,
       timestamp: ts,

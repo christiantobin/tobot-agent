@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
+
 - Phase 0 scaffold: empty CDK app with `TobotAgent-Platform-{stage}` and `TobotAgent-AgentCore-{stage}` stacks that synthesize cleanly.
 - `SPEC.md` capturing the architecture and design decisions.
 - `agent-runtime/` Python container scaffold with a hello-world AgentCore entrypoint.

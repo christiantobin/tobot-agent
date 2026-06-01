@@ -20,8 +20,9 @@ import importlib
 import importlib.util
 import logging
 import sys
+from collections.abc import Iterable
 from pathlib import Path
-from typing import Any, Iterable
+from typing import Any
 
 import yaml
 

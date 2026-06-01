@@ -223,7 +223,8 @@ export class PlatformStack extends cdk.Stack {
 
     new cdk.CfnOutput(this, 'WebhookUrl', {
       value: `${api.apiEndpoint}/webhook`,
-      description: 'HMAC-signed POST endpoint. Callers sign with the value of WebhookSigningSecretArn.',
+      description:
+        'HMAC-signed POST endpoint. Callers sign with the value of WebhookSigningSecretArn.',
     });
 
     new cdk.CfnOutput(this, 'WebhookSigningSecretArn', {
