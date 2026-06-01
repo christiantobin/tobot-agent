@@ -1,0 +1,45 @@
+name: CodeQL
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  schedule:
+    - cron: '37 4 * * 1' # weekly, Monday 04:37 UTC
+
+permissions:
+  contents: read
+
+jobs:
+  analyze:
+    name: Analyze (${{ matrix.language }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # CodeQL needs GitHub Advanced Security, which is free only on PUBLIC
+    # repos. Guarded so this no-ops while the repo is private and lights
+    # up automatically when it goes public.
+    if: github.event.repository.visibility == 'public'
+    permissions:
+      security-events: write
+      contents: read
+      actions: read
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['javascript-typescript', 'python']
+    steps:
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
+
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@03e4368ac7daa2bd82b3e85262f3bf87ee112f57 # v3
+        with:
+          language: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@03e4368ac7daa2bd82b3e85262f3bf87ee112f57 # v3
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@03e4368ac7daa2bd82b3e85262f3bf87ee112f57 # v3
+        with:
+          category: '/language:${{ matrix.language }}'

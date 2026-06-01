@@ -20,11 +20,10 @@ Tobot Agent is pre-1.0. Only the latest commit on `main` is supported. There are
 
 In scope:
 
-- The CDK app, stacks, and constructs in `lib/` and `packages/`
-- The platform Lambdas in `platform/`
+- The CDK app and stacks in `bin/` and `lib/` (including the `TobotGatewayTarget` construct in `lib/constructs/`)
+- The platform Lambdas in `platform/` (Slack + webhook adapters)
 - The agent runtime container in `agent-runtime/`
-- The CLI in `packages/cli`
-- Reference tools in `examples/` (when treated as deployable code, not as documentation)
+- The reference tools in `tools/` (when treated as deployable code, not as documentation)
 
 Out of scope:
 
