@@ -43,15 +43,45 @@ Three planes, three deploy cadences:
 
 ## Tools
 
-- Pluggable via AgentCore Gateway.
-- Two target shapes:
-  - **MCP server target** (primary path): author writes an MCP server in any language, hosts it anywhere (Lambda+Function-URL, Fargate, Render, Cloudflare Workers, on-prem), registers the URL with Gateway via the `TobotGatewayTarget` CDK construct.
-  - **Lambda target** (AWS-shop convenience): author writes a Lambda + JSON schema; Gateway MCP-wraps it transparently.
+Two parallel mechanisms, each appropriate for different authoring populations:
+
+### In-tree tools (Phase 1, current)
+
+- Authored as a directory under `tools/<name>/` with a `tool.yaml` manifest declaring entrypoints, capabilities, secrets, and env vars. See `tools/MANIFEST.md`.
+- Discovery is automatic at container start — no framework code edits per tool.
+- Capability model (see "Capabilities" below) means tool authors declare AWS reach in domain language (`iot:read`), not raw IAM. The deployment binds capabilities to roles.
+- Best for tools the platform team owns or that ship alongside the agent.
+
+### Gateway-registered tools
+
+- Pluggable via AgentCore Gateway. The platform stack provisions an empty Gateway shell ready for targets.
+- Three target shapes (CDK alpha module surface):
+  - **Lambda target**: author writes a Lambda + tool schema; Gateway MCP-wraps it transparently. Convenient for AWS-shops.
+  - **OpenAPI target**: author provides an OpenAPI 3 schema referencing their HTTPS API.
+  - **Smithy target**: author provides a Smithy model.
+- Consumer-side construct: `lib/constructs/TobotGatewayTarget`. Discriminated union of the three kinds; consumers in other CDK apps instantiate it referencing the exported Gateway ARN.
+- Best for tools other teams ship on their own cadence, in their own repos / accounts.
+- **Open gap**: the agent runtime does not yet merge Gateway-registered tools with in-tree manifest tools at `list_tools()` time. Registering a target works; the agent won't call it until the runtime-side wiring lands.
+
+### Tags + invocation gating (both mechanisms)
+
 - Tags: `read | write | destructive`
   - `read`: invoked freely
   - `write`: invoked, logged, flagged in response
   - `destructive`: requires explicit `confirm` reply OR second-approver reaction in the thread before invocation. Hard runtime check, NOT a system-prompt instruction — model cannot bypass it.
-- Scope filter at `list_tools()`: `{adapter, channel_id} → tool_tag_set`. Out-of-scope tools never enter the model's context. Containment + cheaper context.
+- Scope filter at `list_tools()`: `{adapter, scope} → tool_set`. Out-of-scope tools never enter the model's context. Containment + cheaper context. For in-tree tools, scopes are declared in the manifest's `access.scopes`; for Gateway-registered tools, scopes are configured in `config/scope.yaml`.
+
+## Capabilities
+
+Tools declare what AWS reach they need in domain language; the deployment binds those capability names to actual IAM roles in its topology. The framework's job is the indirection — so a tool written against `iot:write` works in a single-account setup AND in a five-stage org topology without modification.
+
+- **Vocabulary**: `<service>:<verb>[:<scope>]` — see `config/VOCAB.md`. Common examples: `iot:read`, `s3:read:<bucket>`, `dynamodb:write:<table>`, `lambda:invoke:<function>`.
+- **Bindings**: `config/capabilities.yaml` maps each capability to either a single role ARN (single-account / non-env-scoped) or a per-env map of role ARNs (multi-account / multi-stage).
+- **Reads for free** (default): `defaults.auto_grant_reads: true` gives the hub task role a wide read policy. Tools doing only reads need zero binding. Writes and destructive caps must always be bound explicitly — that asymmetry is the point.
+- **Runtime**: tools call `capabilities.get_session("iot:write", env="prod")` and get a `boto3.Session`. The framework handles AssumeRole caching, credential refresh, and the auto-grant-reads fallback transparently.
+- **Synth-time validation**: a tool declaring a capability that isn't bound (and isn't auto-granted) fails synth, not runtime. No silent 403s.
+
+This is the load-bearing abstraction that lets the same framework scale from a solo developer with one AWS account to a multi-stage organization without forking the tool surface.
 
 ## Front doors (v1)
 
