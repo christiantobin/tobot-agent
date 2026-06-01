@@ -1,5 +1,8 @@
 # Tobot Agent
 
+[![CI](https://github.com/christiantobin/tobot-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/christiantobin/tobot-agent/actions/workflows/ci.yml)
+[![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+
 An open-source CDK template for an org-wide AI agent on AWS. One-shot
 deploy gets you a Bedrock-backed AI member of your team — reachable
 through Slack and a generic webhook, with tools you ship on your own
@@ -56,17 +59,25 @@ npx cdk deploy --all
 
 After the deploy:
 
-1. **Populate the secrets** (CDK creates empty shells). The stack outputs
-   print the ARNs:
+1. **Populate the secrets** (CDK creates empty shells). The helper
+   prompts for each value (and can auto-generate the webhook secret):
+
+   ```bash
+   scripts/bootstrap-secrets.sh dev      # stage defaults to "dev"
+   ```
+
+   <details><summary>...or set them by hand</summary>
 
    ```bash
    aws secretsmanager put-secret-value \
-     --secret-id <SlackSigningSecretArn>    --secret-string '<from-slack-app>'
+     --secret-id tobot-agent/slack/signing-secret-dev   --secret-string '<from-slack-app>'
    aws secretsmanager put-secret-value \
-     --secret-id <SlackBotTokenArn>         --secret-string 'xoxb-...'
+     --secret-id tobot-agent/slack/bot-token-dev        --secret-string 'xoxb-...'
    aws secretsmanager put-secret-value \
-     --secret-id <WebhookSigningSecretArn>  --secret-string "$(openssl rand -hex 32)"
+     --secret-id tobot-agent/webhook/signing-secret-dev --secret-string "$(openssl rand -hex 32)"
    ```
+
+   </details>
 
 2. **Register your Slack app**: point Event Subscriptions at the
    `SlackEventsUrl` output. Subscribe to:
@@ -86,8 +97,16 @@ After the deploy:
    `@-mention` the bot from any channel and use the allowlist-management
    tools to add users/channels for non-admins.
 
-4. **Add your first tool**: copy `tools/_template/` to
+4. **Smoke-test the deploy**: confirm the whole path is live (webhook →
+   runtime → `echo` tool → back):
+
+   ```bash
+   scripts/smoke-test.sh dev
+   ```
+
+5. **Add your first tool**: copy `tools/_template/` to
    `tools/<your-tool>/`, edit the manifest, ship the Python. Redeploy.
+   See `tools/echo/` and `tools/aws-account-info/` for worked examples.
 
 ## How tools work
 
@@ -207,7 +226,9 @@ tools/                Your tools (one folder per tool)
 
 ## Architecture
 
-See [`SPEC.md`](SPEC.md) for the architecture, design rationale, and
+[`docs/architecture.md`](docs/architecture.md) is the quick tour — three
+planes, the canonical payload, the request lifecycle, and where to look
+in the tree. [`SPEC.md`](SPEC.md) has the full design rationale and
 roadmap.
 
 ## License

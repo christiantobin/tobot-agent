@@ -7,7 +7,7 @@ Thanks for your interest. Tobot Agent is an open template for an AWS-hosted, MCP
 - **Report a bug.** Open an issue using the bug-report template.
 - **Request a feature.** Open an issue using the feature-request template. For larger changes, please open the issue _first_ — alignment before implementation saves everyone time.
 - **Add a front-door adapter.** Teams, Jira-as-trigger, WhatsApp, Discord — see `docs/adding-an-adapter.md` (coming soon) or model on the Slack adapter under `platform/`.
-- **Add a reference tool.** New entries under `examples/` are great for showing off patterns. Keep them small and self-contained.
+- **Add a reference tool.** Copy `tools/_template/` to `tools/<name>/`. The `tools/echo/` and `tools/aws-account-info/` tools are worked examples — keep new ones small and self-contained.
 - **Improve docs.** README, SPEC, in-code comments — clearer is always better than longer.
 
 ## Development setup
@@ -19,20 +19,36 @@ npm install
 npx cdk synth   # verify your environment can synth the stacks
 ```
 
-For the agent runtime container locally:
+For the agent runtime (Python):
 
 ```bash
 cd agent-runtime
 python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt
+.venv/bin/pip install -r requirements.txt -r requirements-dev.txt
 .venv/bin/python main.py    # serves on :8080
+```
+
+## Tests and linting
+
+Both run in CI; run them locally before opening a PR.
+
+```bash
+# TypeScript (CDK + adapters)
+npm run lint          # eslint + prettier --check
+npm run format        # prettier --write (auto-fix)
+npm test              # jest
+npx tsc --noEmit      # type-check
+
+# Python (agent runtime), from agent-runtime/ with the venv active
+ruff check .          # lint (ruff check --fix to auto-fix)
+python -m pytest      # tests
 ```
 
 ## Pull request guidelines
 
 - Open against `main`. Keep PRs focused — one concern per PR.
 - The PR description should answer: _what changed_, _why_, and _how it was tested_.
-- CI must pass (TypeScript type-check, `cdk synth`, any tests). PRs with red CI will be asked to fix before review.
+- CI must pass: lint (eslint/prettier/ruff), type-check, `cdk synth`, and the jest + pytest suites. PRs with red CI will be asked to fix before review.
 - Avoid drive-by refactors in feature PRs — open a separate PR for cleanup.
 - For changes that affect public surface (`config/` shape, `TobotGatewayTarget` construct API, adapter contract), please open a discussion or issue first.
 
