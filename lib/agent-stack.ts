@@ -93,10 +93,11 @@ export class AgentStack extends cdk.Stack {
     // for external teams to register MCP/Lambda/OpenAPI targets against.
     // Default authorizer = Cognito (per SPEC); default protocol = MCP.
     //
-    // The runtime does NOT yet call the Gateway's list_tools() at
-    // invocation time — that wiring is the next phase. For now this
-    // stack exposes the Gateway ARN + endpoint so consumer teams can
-    // start prototyping target registrations.
+    // The runtime consumes the Gateway at invocation time: it opens an
+    // MCP session (GATEWAY_URL below) and merges the Gateway's tools with
+    // the in-tree manifest tools (see agent-runtime/gateway_tools.py).
+    // Degrades gracefully — if GATEWAY_URL is empty the agent runs with
+    // in-tree tools only.
     this.gateway = new agentcore.Gateway(this, 'TobotAgentGateway', {
       gatewayName: `tobot-agent-gateway-${props.shared.stage}`,
       description: `Tobot Agent MCP tool registry (${props.shared.stage})`,
@@ -111,10 +112,12 @@ export class AgentStack extends cdk.Stack {
         ALLOWLIST_TABLE_NAME: allowlistTableName,
         BEDROCK_AGENT_MODEL: models.agent,
         BEDROCK_CLASSIFIER_MODEL: models.classifier,
-        // Plumbed so the runtime can call Gateway list_tools() once
-        // that wiring lands. Empty-friendly: tools work without these.
+        // The runtime opens an MCP session to GATEWAY_URL and merges the
+        // Gateway's tools with in-tree tools. Empty-friendly: if the URL
+        // is blank the runtime skips the Gateway and uses in-tree tools.
         GATEWAY_ID: this.gateway.gatewayId,
         GATEWAY_ARN: this.gateway.gatewayArn,
+        GATEWAY_URL: this.gateway.gatewayUrl ?? '',
         ...secretEnv,
         ...literalEnv,
       },

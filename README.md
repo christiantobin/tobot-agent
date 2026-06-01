@@ -5,10 +5,11 @@ deploy gets you a Bedrock-backed AI member of your team — reachable
 through Slack and a generic webhook, with tools you ship on your own
 cadence.
 
-> **Status:** v1 development. Slack adapter, webhook adapter, manifest-
-> based tools, capability-bound IAM, admin tools, and destructive-action
-> confirmation are all in. AgentCore Gateway for external tool teams,
-> engaged-thread classifier, and approver-reaction confirmation are
+> **Status:** v1 development. Slack adapter (with engaged-thread
+> following), webhook adapter, manifest-based tools, capability-bound
+> IAM, admin tools, destructive-action confirmation, and AgentCore
+> Gateway (shell + consumer construct + runtime consumption) are all in.
+> Approver-reaction confirmation and live-Gateway e2e verification are
 > next. See [`SPEC.md`](SPEC.md) for the full architecture.
 
 ## What you get
@@ -131,11 +132,16 @@ new TobotGatewayTarget(this, 'MyTeamsTools', {
 
 Three target shapes are supported: `lambda`, `openapi`, `smithy`.
 
-**Status note:** the Gateway and the construct are landed. The agent
-runtime's `list_tools()` call doesn't yet merge Gateway-registered
-tools with the in-tree manifest tools — that wiring is the next chunk.
-Until it lands, register targets to verify the construct + schema, but
-don't expect the agent to call them yet.
+**Runtime consumption:** the agent opens an MCP session to the Gateway
+each invocation and merges its tools with the in-tree manifest tools
+(`agent-runtime/gateway_tools.py`). It degrades gracefully — no Gateway
+configured, or an unreachable one, means the agent simply runs with
+in-tree tools. To actually call Gateway tools, the runtime needs a
+bearer token for the Gateway's authorizer; supply one via
+`GATEWAY_ACCESS_TOKEN`, or OAuth2 client-credentials env
+(`GATEWAY_TOKEN_URL` + `GATEWAY_CLIENT_ID` + `GATEWAY_CLIENT_SECRET`).
+This path is unit-tested against a mocked MCP client; verifying it
+against a live Gateway is a post-deploy step.
 
 ## How capabilities resolve to IAM
 
@@ -181,6 +187,7 @@ auto-grantable, so typos don't slip into deploys.
 ```
 agent-runtime/        Python — AgentCore container, Strands agent loop, tool discovery
   capabilities.py     get_session(capability, env=...) — runtime side of capability resolution
+  gateway_tools.py    Opens an MCP session to the AgentCore Gateway; merges its tools with in-tree tools
   destructive_guard.py Tool wrapper enforcing destructive-action confirmation
   admin_tools.py      Allowlist-management tools (exposed when is_admin=true)
   invocation_context.py Thread-local per-invocation state

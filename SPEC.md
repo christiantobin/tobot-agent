@@ -61,7 +61,8 @@ Two parallel mechanisms, each appropriate for different authoring populations:
   - **Smithy target**: author provides a Smithy model.
 - Consumer-side construct: `lib/constructs/TobotGatewayTarget`. Discriminated union of the three kinds; consumers in other CDK apps instantiate it referencing the exported Gateway ARN.
 - Best for tools other teams ship on their own cadence, in their own repos / accounts.
-- **Open gap**: the agent runtime does not yet merge Gateway-registered tools with in-tree manifest tools at `list_tools()` time. Registering a target works; the agent won't call it until the runtime-side wiring lands.
+- **Runtime consumption**: the agent opens an MCP session to the Gateway each invocation (`agent-runtime/gateway_tools.py`) and merges its tools with the in-tree manifest tools. Degrades gracefully — if `GATEWAY_URL` is unset or the Gateway is unreachable, the agent runs with in-tree tools only and never errors. Unit-tested against a mocked MCP client; **end-to-end against a live Gateway is a post-deploy verification step** (requires real AWS + the runtime→Gateway auth handshake, see below).
+- **Runtime → Gateway auth**: `gateway_tools.py` presents a bearer token resolved from env — either a static `GATEWAY_ACCESS_TOKEN`, or an OAuth2 client-credentials grant (`GATEWAY_TOKEN_URL` + `GATEWAY_CLIENT_ID` + `GATEWAY_CLIENT_SECRET` [+ `GATEWAY_SCOPE`]). Provisioning the IdP client (Cognito M2M by default) and supplying those values is the operator's post-deploy step; until then the runtime connects unauthenticated and degrades to in-tree tools if the Gateway rejects it.
 
 ### Tags + invocation gating (both mechanisms)
 

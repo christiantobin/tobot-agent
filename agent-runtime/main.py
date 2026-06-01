@@ -33,6 +33,7 @@ from strands import Agent
 from strands.models.bedrock import BedrockModel
 
 from admin_tools import ADMIN_TOOLS
+from gateway_tools import gateway_tools
 from invocation_context import invocation_context, reset as reset_invocation_context
 from session_store import load_history, save_history
 from tools.discovery import AUTO_TOOLS, filter_for_invocation
@@ -173,26 +174,32 @@ def handler(request: dict[str, Any]) -> dict[str, Any]:
         for m in prior
     ]
 
-    # Compose the toolset for this invocation: manifest-discovered
-    # tools (scope-filtered) + admin tools when the caller is an admin.
-    tools = list(filter_for_invocation(AUTO_TOOLS, scope=scope))
-    if is_admin:
-        tools.extend(ADMIN_TOOLS)
+    # Compose the toolset for this invocation: manifest-discovered tools
+    # (scope-filtered) + admin tools when the caller is an admin + tools
+    # registered on the AgentCore Gateway by external teams. The Gateway
+    # session must stay open while the agent runs, so the agent call lives
+    # inside the gateway_tools() context manager (it yields [] when no
+    # Gateway is configured).
+    with gateway_tools() as gw_tools:
+        tools = list(filter_for_invocation(AUTO_TOOLS, scope=scope))
+        if is_admin:
+            tools.extend(ADMIN_TOOLS)
+        tools.extend(gw_tools)
 
-    agent = Agent(
-        model=_model,
-        system_prompt=_build_system_prompt(
-            principal_id=principal_id,
-            scope=scope,
-            is_admin=is_admin,
-            adapter=adapter,
-        ),
-        tools=tools,
-        messages=prior,
-    )
+        agent = Agent(
+            model=_model,
+            system_prompt=_build_system_prompt(
+                principal_id=principal_id,
+                scope=scope,
+                is_admin=is_admin,
+                adapter=adapter,
+            ),
+            tools=tools,
+            messages=prior,
+        )
 
-    result = agent(prompt)
-    reply = _extract_reply(result)
+        result = agent(prompt)
+        reply = _extract_reply(result)
     log.info("reply_len=%d", len(reply))
 
     persisted: list[dict[str, Any]] = list(prior_snapshot)
