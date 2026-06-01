@@ -8,6 +8,12 @@ deploy gets you a Bedrock-backed AI member of your team — reachable
 through Slack and a generic webhook, with tools you ship on your own
 cadence.
 
+**AWS-native platform, multi-cloud reach.** The agent _runs_ on AWS, but
+what it can _operate_ is open-ended: every integration is just a tool, so
+an AWS-hosted bot can be the ops front-end for your whole estate — AWS,
+Azure, GCP, SaaS. See `tools/aws-account-info/` and
+`tools/azure-resource-info/` for the AWS and cross-cloud reference tools.
+
 > **Status:** v1 development. Slack adapter (with engaged-thread
 > following), webhook adapter, manifest-based tools, capability-bound
 > IAM, admin tools, destructive-action confirmation, and AgentCore
@@ -29,6 +35,11 @@ cadence.
 - **Manifest-driven tools** — drop a directory under `tools/<name>/`,
   the agent discovers it at the next container start. No framework
   code edits per tool.
+- **Multi-cloud ops bot** — the platform is AWS-native, but reach isn't.
+  Tools can operate any cloud or SaaS; non-AWS tools carry their own
+  credentials (service principal, API key) via the manifest's `secrets:`
+  block instead of the AWS capability model. `tools/azure-resource-info/`
+  is the worked Azure example.
 - **Capability-bound IAM** — tools declare AWS reach in domain language
   (`iot:read`, `dynamodb:write:<table>`); your deployment binds
   capabilities to roles in `config/capabilities.yaml`. Auto-grant-reads

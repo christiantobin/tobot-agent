@@ -19,6 +19,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Manifest-driven tool discovery (`tools/*/tool.yaml`); Slack + webhook front-door adapters; admin tools; destructive-action confirmation guard; thread-keyed session history.
 - AgentCore Gateway: shell + `TobotGatewayTarget` consumer construct, and runtime consumption (`agent-runtime/gateway_tools.py`) that merges Gateway-registered tools with in-tree tools, degrading gracefully when no Gateway is configured.
 - Example tools: `tools/echo/` (zero-AWS smoke-test) and `tools/aws-account-info/` (read-only, demonstrates the capability→IAM binding).
+- `tools/azure-resource-info/` — non-AWS (Azure) read example demonstrating cross-cloud auth: a service principal carried via the manifest `secrets:` block (no AWS capability model), subscription id via `env:`. README/SPEC reframed around "AWS-native platform, multi-cloud reach."
 - Test suites: jest (TypeScript, 61 tests) and pytest (Python, 24 tests), both wired into CI alongside eslint/prettier/ruff linting.
 - First-run scripts: `scripts/bootstrap-secrets.sh` and `scripts/smoke-test.sh`.
 - `docs/architecture.md` quick-tour.

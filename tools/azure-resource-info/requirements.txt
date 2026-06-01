@@ -1,0 +1,4 @@
+# Azure SDK — installed at container build time (per-tool requirements).
+# This is the first example tool with real pip dependencies.
+azure-identity>=1.16
+azure-mgmt-resource>=23.0

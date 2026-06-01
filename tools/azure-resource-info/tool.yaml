@@ -1,0 +1,51 @@
+# =============================================================================
+# azure-resource-info — worked example of a NON-AWS (cross-cloud) tool.
+#
+# Tobot Agent's PLATFORM is AWS-native, but its REACH is not: the agent can
+# operate any cloud through tools. This is the reference for that — a
+# read-only Azure tool, the cross-cloud sibling of tools/aws-account-info/.
+#
+# The teaching point is AUTHENTICATION. An AWS-hosted agent reaching into
+# Azure can't use AWS IAM there, so this tool:
+#   * does NOT declare `capabilities:` (the capability model is an AWS
+#     convenience — see config/VOCAB.md). Non-AWS tools opt out and carry
+#     their own credentials.
+#   * gets an Azure service principal from a Secrets Manager secret
+#     (the `secrets:` block below), and the subscription id from a plain
+#     env var (the `env:` block) — so this one tool exercises BOTH manifest
+#     credential mechanisms.
+# =============================================================================
+
+name: azure-resource-info
+version: 0.1.0
+description: |
+  Read-only Azure introspection. `list_resource_groups` lists the resource
+  groups in the configured subscription; `list_resources` lists resources,
+  optionally scoped to one resource group. Reach for these when a user asks
+  what's running in Azure, what resource groups exist, or to find an Azure
+  resource by group. No writes, no side effects.
+
+module: tool
+
+entrypoints:
+  - list_resource_groups
+  - list_resources
+
+tags:
+  - read
+
+# Service-principal credentials. CDK provisions an empty Secrets Manager
+# shell and grants the runtime read on it. Populate it post-deploy with a
+# JSON object: {"tenant_id":"...","client_id":"...","client_secret":"..."}.
+#   aws secretsmanager put-secret-value \
+#     --secret-id tobot-agent/azure-sp-<stage> \
+#     --secret-string '{"tenant_id":"...","client_id":"...","client_secret":"..."}'
+secrets:
+  - name: azure-sp
+    description: 'Azure service-principal creds (JSON keys: tenant_id, client_id, client_secret).'
+    env: AZURE_SP_SECRET_ARN
+
+# Non-secret config. Replace the placeholder with your subscription id and
+# redeploy. The tool returns a clear setup-required message until you do.
+env:
+  AZURE_SUBSCRIPTION_ID: '<your-subscription-id>'

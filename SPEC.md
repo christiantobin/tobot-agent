@@ -111,7 +111,7 @@ This is the load-bearing abstraction that lets the same framework scale from a s
 
 ## Non-goals (intentional)
 
-- Multi-cloud platform. The platform is AWS-native (AgentCore Runtime + Gateway are AWS services). Tools registered with Gateway can run on any cloud — that's where the cloud-agnosticism lives.
+- Multi-cloud _platform_. The platform is AWS-native (AgentCore Runtime + Gateway are AWS services) and deliberately stays that way — the managed services are what make this a one-hour deploy. But multi-cloud _reach_ is a first-class feature, not a non-goal: where the agent runs and what it can operate are separate axes. Every integration is a tool, so an AWS-hosted agent operates AWS, Azure, GCP, and SaaS alike. Non-AWS tools carry their own credentials (service principal, API key) via the manifest `secrets:` block rather than the AWS capability model; `tools/azure-resource-info/` is the reference. If you genuinely need to run the _platform_ off AWS, that's a fork — AgentCore Runtime/Gateway have no direct equivalents.
 - A model abstraction layer. Bedrock-only. Operators wanting OpenAI/Anthropic API direct can fork.
 - A general-purpose chat UI. Front doors are existing comms tools (Slack/Teams/etc.), not a custom web app.
 
