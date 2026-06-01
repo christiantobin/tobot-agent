@@ -1,0 +1,45 @@
+# =============================================================================
+# aws-account-info — worked example of a READ-ONLY AWS tool.
+#
+# This is the tool to copy when your tool needs AWS reach. It shows the
+# framework's core abstraction: you declare *capabilities* in domain
+# language here, and the runtime resolves them to a boto3 session via
+# capabilities.get_session() — your code never names a role ARN.
+#
+# Two capabilities, two patterns:
+#   * sts:read       — covered by auto-grant-reads (defaults in
+#                      config/capabilities.yaml). Needs NO binding; works
+#                      out of the box on a fresh deploy.
+#   * cloudwatch:read — also a *:read, so also auto-granted by default.
+#                      Declared separately to show that a tool lists every
+#                      capability it uses, one per AWS surface it touches.
+#
+# Because both are reads and auto-grant-reads defaults on, this tool runs
+# with zero capability bindings. Flip a capability to a write (e.g.
+# `logs:write`) and synth will FAIL until you bind it — that asymmetry is
+# the point.
+# =============================================================================
+
+name: aws-account-info
+version: 0.1.0
+description: |
+  Read-only AWS introspection. `who_am_i` returns the AWS identity the
+  agent runs as (account, ARN) via STS. `list_log_groups` lists
+  CloudWatch Logs group names, optionally filtered by prefix. Reach for
+  these when a user asks "what account are we in?", "who does the bot run
+  as?", or "what log groups exist?". No writes, no side effects.
+
+module: tool
+
+entrypoints:
+  - who_am_i
+  - list_log_groups
+
+# Domain-language AWS reach. Resolved to roles in config/capabilities.yaml;
+# both are reads, so auto-grant-reads covers them with no binding needed.
+capabilities:
+  - sts:read
+  - cloudwatch:read
+
+tags:
+  - read

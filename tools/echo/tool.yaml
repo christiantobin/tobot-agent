@@ -1,0 +1,31 @@
+# =============================================================================
+# echo — the "hello world" of Tobot tools.
+#
+# This is the simplest possible tool: no AWS, no capabilities, no secrets.
+# Use it to prove the discovery + invocation path end to end. If you can
+# @mention the bot and have it call `echo`, your deploy is healthy.
+#
+# It's also a worked example of the manifest's REQUIRED fields. For the
+# capability / IAM features, see tools/aws-account-info/. For the full
+# schema, see tools/MANIFEST.md.
+# =============================================================================
+
+name: echo
+version: 0.1.0
+description: |
+  Diagnostic / smoke-test tool. `echo` returns text verbatim; `whoami`
+  reports who the agent thinks is calling (principal id, scope, admin
+  flag). Reach for these when a user asks the bot to "confirm you're
+  working", "echo this back", or "who am I to you?". Pure read, no side
+  effects.
+
+module: tool
+
+entrypoints:
+  - echo
+  - whoami
+
+# `read` is the default, so this block is optional here — shown for
+# illustration. `read` tools are invoked freely (no confirmation gate).
+tags:
+  - read
