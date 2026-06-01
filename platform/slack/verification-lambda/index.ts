@@ -11,6 +11,7 @@ import { verifySlackSignature } from './slack-signature';
 import { isAdmin, isAllowlisted } from './allowlist-check';
 import { getEngagement } from './engaged-threads';
 import { isAddressedToBot } from './engagement-classifier';
+import { chooseRoute } from './routing';
 
 const sqs = new SQSClient({});
 const secrets = new SecretsManagerClient({});
@@ -104,7 +105,7 @@ export async function handler(
   const channelId = ev.channel;
   if (!userId || !channelId) return { statusCode: 200, body: '' };
 
-  const route = await chooseRoute(ev);
+  const route = await chooseRoute(ev, { getEngagement, isAddressedToBot });
   if (route === 'drop') return { statusCode: 200, body: '' };
 
   // Same allowlist gate applies to both routing paths. Admins bypass.
@@ -127,50 +128,3 @@ export async function handler(
   return { statusCode: 200, body: '' };
 }
 
-/**
- * Decide whether this event should be routed to the agent.
- *
- * - app_mention: always 'queue'.
- * - message in a thread: 'queue' only if engaged + classifier says yes.
- * - everything else: 'drop'.
- */
-function escapeRegex(s: string): string {
-  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-async function chooseRoute(
-  ev: SlackEventEnvelope['event'] & object,
-): Promise<'queue' | 'drop'> {
-  if (ev.type === 'app_mention') return 'queue';
-
-  if (ev.type === 'message') {
-    // Only thread continuations are eligible — top-level channel
-    // messages are not, even in engaged channels. The thread_ts
-    // identifies the thread; we only follow-up where we've replied
-    // before.
-    const threadTs = ev.thread_ts;
-    if (!threadTs || threadTs === ev.ts) return 'drop';
-
-    // Slack sends both `app_mention` AND `message` for the same
-    // @-mention. Drop the message event if it contains a bot mention
-    // (the app_mention path handles it). If BOT_USER_ID is set, match
-    // exactly; otherwise treat any `<@U...>` as likely a bot mention.
-    // The second case very occasionally drops a real follow-up that
-    // happens to @-mention another human — set BOT_USER_ID to fix.
-    const text = (ev.text ?? '').trim();
-    if (!text) return 'drop';
-    const botUserId = process.env.BOT_USER_ID;
-    const mentionPattern = botUserId
-      ? new RegExp(`<@${escapeRegex(botUserId)}>`)
-      : /<@[A-Z0-9]+>/;
-    if (mentionPattern.test(text)) return 'drop';
-
-    const { engaged, previousBotReply } = await getEngagement(threadTs);
-    if (!engaged) return 'drop';
-
-    const addressed = await isAddressedToBot({ text, previousBotReply });
-    return addressed ? 'queue' : 'drop';
-  }
-
-  return 'drop';
-}

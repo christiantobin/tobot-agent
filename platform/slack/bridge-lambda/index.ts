@@ -9,6 +9,7 @@ import {
 import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import type { SQSEvent, SQSRecord } from 'aws-lambda';
 import { postMessage, addReaction, removeReaction } from './slack-client';
+import { stripBotMention, isExplicitConfirmation } from './confirmation';
 
 const ENGAGED_TTL_SECONDS = 24 * 60 * 60;
 const ENGAGED_REPLY_SNIPPET_CHARS = 600;
@@ -44,25 +45,6 @@ interface SlackEventEnvelope {
     ts?: string;
     thread_ts?: string;
   };
-}
-
-/** Slack @-mentions render the bot id as `<@UXXXX>`. Remove and trim. */
-function stripBotMention(text: string): string {
-  return text.replace(/<@[A-Z0-9_]+>\s*/g, '').trim();
-}
-
-/**
- * Does the user's message body (post-mention-strip) constitute an
- * explicit confirmation of a pending destructive action?
- *
- * Strict matching by design: we only accept the trimmed body being
- * literally "confirm" (case-insensitive, with optional trailing
- * punctuation). Embedded mentions of the word in a longer message
- * don't count — that's how we keep the gate meaningful in the face
- * of a malicious or mistaken prompt.
- */
-function isExplicitConfirmation(text: string): boolean {
-  return /^confirm[.!\s]*$/i.test(text.trim());
 }
 
 function isAdminUser(userId: string): boolean {

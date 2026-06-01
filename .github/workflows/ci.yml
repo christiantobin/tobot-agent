@@ -28,6 +28,9 @@ jobs:
       - name: Type-check
         run: npx tsc --noEmit
 
+      - name: Unit tests (jest)
+        run: npx jest --ci
+
       - name: CDK synth
         run: npx cdk synth --context stage=ci --quiet
 
@@ -46,8 +49,14 @@ jobs:
 
       - name: Install dependencies
         working-directory: agent-runtime
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
 
       - name: Compile-check
         working-directory: agent-runtime
         run: python -m compileall -q .
+
+      - name: Unit tests (pytest)
+        working-directory: agent-runtime
+        run: python -m pytest
