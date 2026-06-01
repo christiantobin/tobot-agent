@@ -1,0 +1,9 @@
+target-version = "py312"
+line-length = 100
+extend-exclude = [".venv"]
+
+[lint]
+select = ["E", "F", "I", "B", "UP"]
+# E501 (line length) is noisy on documentation-heavy modules; the code is
+# wrapped for readability, not to a hard column.
+ignore = ["E501"]

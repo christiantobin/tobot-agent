@@ -1,0 +1,79 @@
+# =============================================================================
+# capabilities.yaml — capability registry for this deployment.
+#
+# Tools declare what they need in domain language:
+#     capabilities: [iot:read, dynamodb:write:device-registry]
+#
+# This file binds those capability names to actual IAM roles (or env-scoped
+# pools of roles) in YOUR topology. The CDK stack reads this at synth time
+# to grant sts:AssumeRole; the runtime reads it at first call to mint
+# short-lived credentials per capability.
+#
+# Three things to know:
+#
+#   1. The capability NAMES are conventional, not fixed. You can use the
+#      vocabulary that ships with the framework (see VOCAB.md) or invent
+#      your own — the framework only checks that every capability a tool
+#      declares has a binding here. Unknown capabilities fail at synth.
+#
+#   2. Bindings can be single-account or per-env. A single-account adopter
+#      binds capabilities to roles in the hub account itself (or even the
+#      hub task role) and never assumes anything. A multi-env adopter
+#      gives each capability a map of env -> role ARN.
+#
+#   3. Read-only capabilities can be auto-granted at the hub level by
+#      flipping `defaults.auto_grant_reads`. With it on, you don't need
+#      to bind `*:read` capabilities — the hub task role gets a wide
+#      read policy and the runtime uses the local session. Convenient
+#      for solo / single-account adopters; explicit binding is better
+#      for shops with serious ops hygiene.
+# =============================================================================
+
+defaults:
+  # If true, every *:read capability is satisfied by a wide read policy on
+  # the hub task role itself. Tools doing reads then just call boto3
+  # against the hub's default session — no AssumeRole, no per-capability
+  # binding needed. Convenient default for solo adopters; flip to false
+  # and bind reads explicitly if you want narrower grants.
+  auto_grant_reads: true
+
+  # Default region for capabilities that don't pin one. Override per
+  # capability if your tooling is multi-region.
+  region: us-west-2
+
+# Per-capability bindings. Drop entries here as you wire tools.
+#
+# Shape A — single binding (single-account, or capability isn't env-scoped):
+#
+#   capabilities:
+#     iot:read:
+#       role_arn: arn:aws:iam::123456789012:role/TobotIotRead
+#
+# Shape B — per-env bindings (multi-account / multi-stage):
+#
+#   capabilities:
+#     iot:write:
+#       envs:
+#         dev:   arn:aws:iam::111111111111:role/TobotIotWrite
+#         prod:  arn:aws:iam::222222222222:role/TobotIotWrite
+#
+# Shape C — same role, multiple capabilities (advanced):
+#
+#   capabilities:
+#     iot:read: { role_arn: arn:aws:iam::111:role/TobotReadOnly }
+#     s3:read:my-bucket: { role_arn: arn:aws:iam::111:role/TobotReadOnly }
+#
+# At runtime tools call `capabilities.get_session("iot:read", env="dev")`
+# and receive a boto3.Session backed by the bound role.
+
+capabilities: {}
+
+# Envs you reference in capability bindings. Optional. If omitted, the
+# framework operates in single-account mode (no env parameter required
+# on capability lookups). Listing envs here enables sanity checks at
+# synth time (typos in binding env names fail loudly).
+#
+# envs:
+#   - dev
+#   - prod
+envs: []

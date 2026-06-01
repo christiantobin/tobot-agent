@@ -1,0 +1,70 @@
+# =============================================================================
+# tool.yaml — manifest for a Tobot Agent tool.
+# Copy this whole directory to tools/<your-tool-name>/ and edit.
+# Schema doc: tools/MANIFEST.md
+# Capability vocabulary: config/VOCAB.md
+# =============================================================================
+
+# Required ====================================================================
+
+name: my-tool # kebab-case. Should match the directory name.
+version: 0.1.0
+description: |
+  Short paragraph in plain English. Write it for the MODEL — it's what
+  the agent sees in its tool catalog. What can the agent do because of
+  this tool? When should it reach for it? When should it NOT?
+
+# The Python module that contains your @strands.tool functions.
+# - Simple form (one .py file in this directory): `module: tool` (matches tool.py).
+# - Package form (full Python package): `module: <snake_case_pkg_name>`.
+module: tool
+
+# Functions inside `module` to expose to the agent. Each must already be
+# decorated with @strands.tool inside the file.
+entrypoints:
+  - hello
+
+# Optional ====================================================================
+
+# Capabilities this tool needs. Must be bound in config/capabilities.yaml.
+# Synth fails if a capability isn't bound.
+# capabilities:
+#   - iot:read
+#   - dynamodb:write:my-table
+
+# Invocation-time semantics. Most tools omit this (treated as `read`).
+# Set `destructive` for delete-shaped operations — the runtime wraps
+# the tool in a confirmation guard that requires explicit user opt-in
+# before allowing the call through. Hard runtime check, NOT a prompt
+# instruction.
+# tags:
+#   - destructive
+
+# Escape hatch: direct IAM on the hub task role. Use sparingly — most
+# AWS reach should go through capabilities, not raw IAM. The actions/
+# resources here are added in-account to the hub role.
+# iam:
+#   - actions: ['ses:SendEmail']
+#     resources: ['*']
+
+# Secrets Manager shells CDK creates and grants read access to.
+# Populate values manually post-deploy:
+#   aws secretsmanager put-secret-value \
+#     --secret-id tobot-agent/<name> \
+#     --secret-string '{"api_key":"..."}'
+# secrets:
+#   - name: my-tool-api-key
+#     description: API key for the upstream service.
+#     env: MY_TOOL_SECRET_ARN
+
+# Plain env vars (non-secret) injected into the runtime container.
+# env:
+#   MY_TOOL_API_BASE: https://api.example.com
+
+# Per-invocation visibility gating. Without this block the tool is
+# visible everywhere. Front-door adapters pass an opaque scope string
+# (Slack channel id, webhook tenant id, etc.); the tool is filtered
+# out for invocations that don't match.
+# access:
+#   scopes:
+#     - C0ABC1234

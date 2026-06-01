@@ -1,0 +1,2 @@
+# echo needs nothing beyond what the agent runtime already provides
+# (strands-agents). No extra dependencies.

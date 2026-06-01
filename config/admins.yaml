@@ -6,5 +6,5 @@
 #
 # v0 scaffold — empty. Add your own user IDs when you deploy.
 
-slack: []      # e.g. ["U0ABC1234"]
-webhook: []    # e.g. ["admin@example.com"]
+slack: [] # e.g. ["U0ABC1234"]
+webhook: [] # e.g. ["admin@example.com"]

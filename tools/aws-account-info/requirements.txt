@@ -1,0 +1,2 @@
+# aws-account-info only uses boto3, which the agent runtime already
+# provides. No extra dependencies.

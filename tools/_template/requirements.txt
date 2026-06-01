@@ -1,0 +1,3 @@
+# pip dependencies for this tool. Installed at container build time.
+# Leave empty if you only need what the agent runtime already provides
+# (boto3, strands-agents).

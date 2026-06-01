@@ -2,6 +2,7 @@
 import * as cdk from 'aws-cdk-lib';
 import { PlatformStack } from '../lib/platform-stack';
 import { AgentStack } from '../lib/agent-stack';
+import { Shared } from '../lib/shared';
 
 const app = new cdk.App();
 
@@ -12,6 +13,8 @@ const env = {
 
 const stage = app.node.tryGetContext('stage') ?? 'dev';
 
+const shared: Shared = { region: env.region, stage };
+
 const platform = new PlatformStack(app, `TobotAgent-Platform-${stage}`, {
   env,
   stage,
@@ -19,10 +22,12 @@ const platform = new PlatformStack(app, `TobotAgent-Platform-${stage}`, {
 
 const agent = new AgentStack(app, `TobotAgent-AgentCore-${stage}`, {
   env,
-  stage,
+  shared,
 });
 
-// Cross-stack wiring lands when the slack-bridge needs the runtime ARN and the
-// runtime needs the allowlist table name. Phase 0 keeps both stacks empty.
-void platform;
-void agent;
+// Cross-stack wiring. CDK resolves the AGENT_RUNTIME_ARN env injection
+// + the grantInvoke as a CloudFormation export/import pair, which means
+// platform must deploy AFTER agent the first time. `cdk deploy --all`
+// handles that automatically via the dependency edge below.
+platform.wireAgentRuntime(agent.runtime);
+platform.addDependency(agent);

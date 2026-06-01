@@ -19,14 +19,20 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: '20'
           cache: npm
 
       - name: Install dependencies
         run: npm ci
 
+      - name: Lint (eslint + prettier)
+        run: npm run lint
+
       - name: Type-check
         run: npx tsc --noEmit
+
+      - name: Unit tests (jest)
+        run: npx jest --ci
 
       - name: CDK synth
         run: npx cdk synth --context stage=ci --quiet
@@ -40,14 +46,24 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: '3.12'
           cache: pip
           cache-dependency-path: agent-runtime/requirements.txt
 
       - name: Install dependencies
         working-directory: agent-runtime
-        run: pip install -r requirements.txt
+        run: |
+          pip install -r requirements.txt
+          pip install -r requirements-dev.txt
+
+      - name: Lint (ruff)
+        working-directory: agent-runtime
+        run: ruff check .
 
       - name: Compile-check
         working-directory: agent-runtime
         run: python -m compileall -q .
+
+      - name: Unit tests (pytest)
+        working-directory: agent-runtime
+        run: python -m pytest
