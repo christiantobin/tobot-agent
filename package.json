@@ -17,7 +17,7 @@
   },
   "devDependencies": {
     "@aws-cdk/aws-bedrock-agentcore-alpha": "^2.250.0-alpha.0",
-    "@aws-sdk/client-bedrock-agentcore": "^3.1035.0",
+    "@aws-sdk/client-bedrock-agentcore": "^3.1058.0",
     "@types/aws-lambda": "^8.10.145",
     "@types/jest": "^29.5.12",
     "@types/node": "^20.11.0",
@@ -34,11 +34,11 @@
     "typescript": "^5.4.0"
   },
   "dependencies": {
-    "@aws-sdk/client-bedrock-runtime": "^3.600.0",
-    "@aws-sdk/client-dynamodb": "^3.600.0",
-    "@aws-sdk/client-secrets-manager": "^3.600.0",
-    "@aws-sdk/client-sqs": "^3.600.0",
-    "@aws-sdk/lib-dynamodb": "^3.600.0",
+    "@aws-sdk/client-bedrock-runtime": "^3.1058.0",
+    "@aws-sdk/client-dynamodb": "^3.1058.0",
+    "@aws-sdk/client-secrets-manager": "^3.1058.0",
+    "@aws-sdk/client-sqs": "^3.1058.0",
+    "@aws-sdk/lib-dynamodb": "^3.1058.0",
     "aws-cdk-lib": "^2.140.0",
     "constructs": "^10.3.0",
     "yaml": "^2.5.0"
