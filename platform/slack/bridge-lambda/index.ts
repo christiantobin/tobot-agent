@@ -7,6 +7,7 @@ import { DynamoDBClient, PutItemCommand } from '@aws-sdk/client-dynamodb';
 import type { SQSEvent, SQSRecord } from 'aws-lambda';
 import { postMessage, addReaction, removeReaction } from './slack-client';
 import { stripBotMention, isExplicitConfirmation } from './confirmation';
+import { isProcessableEventType } from './event-filter';
 
 const ENGAGED_TTL_SECONDS = 24 * 60 * 60;
 const ENGAGED_REPLY_SNIPPET_CHARS = 600;
@@ -70,7 +71,13 @@ function asRuntimeSessionId(threadTs: string): string {
  */
 async function processRecord(record: SQSRecord, botToken: string): Promise<void> {
   const parsed = JSON.parse(record.body) as SlackEventEnvelope;
-  if (parsed.type !== 'event_callback' || parsed.event?.type !== 'app_mention') return;
+  if (parsed.type !== 'event_callback' || !parsed.event) return;
+  const eventType = parsed.event.type;
+  if (!isProcessableEventType(eventType)) return;
+  console.log(
+    `bridge: processing ${eventType} from ${parsed.event.user} in ${parsed.event.channel} ` +
+      `(thread ${parsed.event.thread_ts ?? parsed.event.ts})`,
+  );
 
   const channel = parsed.event.channel;
   const userId = parsed.event.user;
