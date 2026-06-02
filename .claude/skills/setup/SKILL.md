@@ -51,7 +51,7 @@ For Slack, **use the `setup-slack` skill**. Other platforms (Teams, Discord, …
 | Swap models         | edit `config/models.yaml`, redeploy. Use a valid Bedrock inference-profile id (some require a `-v1:0` suffix; verify by invoking it).     |
 | Add a tool          | copy `tools/_template/` → `tools/<name>/`, redeploy. No framework edits.                                                                  |
 | Update dependencies | merge Dependabot PRs after `npm run lint && npx tsc --noEmit && npx jest`, `pytest`, and `npx cdk synth` pass.                            |
-| Tear down           | `npx cdk destroy --all`. Secrets are retained by default — delete them manually if you won't reuse them.                                  |
+| Tear down           | Use the `uninstall` skill: `npx cdk destroy --all` (secrets included — they use `RemovalPolicy.DESTROY`) + revoke the Slack app.          |
 | Logs                | CloudWatch: the verification/bridge/webhook Lambda log groups + the AgentCore runtime.                                                    |
 
 ## Troubleshooting
