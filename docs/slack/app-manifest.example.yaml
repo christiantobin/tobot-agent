@@ -1,0 +1,39 @@
+# Slack app manifest for Tobot Agent.
+#
+# Fastest way to create the app: https://api.slack.com/apps → Create New
+# App → From an app manifest → pick your workspace → paste this (YAML).
+#
+# Before pasting, replace the request_url host with YOUR deploy's
+# `SlackEventsUrl` output (printed by `cdk deploy`). Slack verifies the
+# URL on creation — the verification Lambda answers the handshake even
+# before you've set the signing secret, so this works on a fresh deploy.
+#
+# After creating: Install to Workspace, then copy the Bot User OAuth
+# Token (xoxb-…) and Signing Secret into Secrets Manager via
+# `scripts/bootstrap-secrets.sh <stage>`.
+display_information:
+  name: Tobot Agent
+  description: An AI member of the team.
+  background_color: '#2c2d30'
+features:
+  bot_user:
+    display_name: tobot
+    always_online: true
+oauth_config:
+  scopes:
+    bot:
+      - app_mentions:read # receive @mentions
+      - chat:write # post replies
+      - reactions:write # ⏳ → ✅/✗ lifecycle
+      - channels:history # engaged-thread following (public channels)
+      - groups:history # engaged-thread following (private channels)
+settings:
+  event_subscriptions:
+    request_url: https://YOUR-API-ID.execute-api.YOUR-REGION.amazonaws.com/slack/events
+    bot_events:
+      - app_mention # primary invocation path (required)
+      - message.channels # engaged-thread follow-ups (optional)
+      - message.groups # engaged-thread follow-ups in private channels
+  org_deploy_enabled: false
+  socket_mode_enabled: false
+  token_rotation_enabled: false
