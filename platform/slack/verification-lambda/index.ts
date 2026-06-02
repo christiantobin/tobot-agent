@@ -58,15 +58,6 @@ export async function handler(
   const body = event.body;
   if (!body) return { statusCode: 400, body: 'missing body' };
 
-  const timestamp = event.headers['x-slack-request-timestamp'] ?? '';
-  const signature = event.headers['x-slack-signature'] ?? '';
-  const signingSecret = await getSigningSecret();
-
-  const verdict = verifySlackSignature({ body, timestamp, signature, signingSecret });
-  if (!verdict.valid) {
-    return { statusCode: 401, body: verdict.reason ?? 'invalid signature' };
-  }
-
   let parsed: SlackEventEnvelope;
   try {
     parsed = JSON.parse(body) as SlackEventEnvelope;
@@ -74,12 +65,27 @@ export async function handler(
     return { statusCode: 400, body: 'invalid json' };
   }
 
+  // Slack's URL-verification handshake fires when you first set the
+  // Request URL — which is BEFORE you've populated the signing secret.
+  // Answer the challenge without a signature/secret check (it only
+  // echoes a token to prove URL ownership), so setup isn't a
+  // chicken-and-egg. Every other event type still requires a valid
+  // signature below.
   if (parsed.type === 'url_verification' && parsed.challenge) {
     return {
       statusCode: 200,
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ challenge: parsed.challenge }),
     };
+  }
+
+  const timestamp = event.headers['x-slack-request-timestamp'] ?? '';
+  const signature = event.headers['x-slack-signature'] ?? '';
+  const signingSecret = await getSigningSecret();
+
+  const verdict = verifySlackSignature({ body, timestamp, signature, signingSecret });
+  if (!verdict.valid) {
+    return { statusCode: 401, body: verdict.reason ?? 'invalid signature' };
   }
 
   if (parsed.type !== 'event_callback' || !parsed.event) {

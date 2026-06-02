@@ -1,7 +1,17 @@
 # Tobot Agent
 
 [![CI](https://github.com/christiantobin/tobot-agent/actions/workflows/ci.yml/badge.svg)](https://github.com/christiantobin/tobot-agent/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/christiantobin/tobot-agent/actions/workflows/codeql.yml/badge.svg)](https://github.com/christiantobin/tobot-agent/actions/workflows/codeql.yml)
 [![License: Apache 2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
+[![AWS CDK](https://img.shields.io/badge/CDK-AWS_AgentCore-FF9900?logo=amazonaws&logoColor=white)](SPEC.md)
+
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org)
+[![Python 3.12](https://img.shields.io/badge/Python-3.12-3776AB?logo=python&logoColor=white)](https://www.python.org)
+[![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg)](https://prettier.io)
+[![Ruff](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/astral-sh/ruff/main/assets/badge/v2.json)](https://github.com/astral-sh/ruff)
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.1-4baaaa.svg)](CODE_OF_CONDUCT.md)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
+[![GitHub stars](https://img.shields.io/github/stars/christiantobin/tobot-agent?style=flat)](https://github.com/christiantobin/tobot-agent/stargazers)
 
 An open-source CDK template for an org-wide AI agent on AWS. One-shot
 deploy gets you a Bedrock-backed AI member of your team — reachable
@@ -62,6 +72,13 @@ Azure, GCP, SaaS. See `tools/aws-account-info/` and
 
 Fork this repo, clone your fork, and follow the steps below. The whole
 platform comes up with one `cdk deploy`.
+
+> **Using Claude Code?** This repo ships `/setup` and `/setup-slack`
+> skills. Open the repo in Claude Code and run **`/setup`** to have it
+> drive the deploy with you (prerequisites, `cdk deploy`, secrets, smoke
+> test, maintenance), then **`/setup-slack`** to wire a Slack workspace.
+> The steps below are exactly what those skills automate — follow them by
+> hand if you prefer.
 
 ### 1. Prerequisites
 
