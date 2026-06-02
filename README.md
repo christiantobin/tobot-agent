@@ -45,9 +45,10 @@ and the plumbing for anyone to add a capability by dropping a folder.
 Fork this repo, clone your fork, and follow the steps below. The whole
 platform comes up with one `cdk deploy`.
 
-> **Using Claude Code?** This repo ships `/setup` and `/setup-slack`
-> skills. Run **`/setup`** to have it drive the deploy with you, then
-> **`/setup-slack`** to wire a Slack workspace. The steps below are
+> **Using Claude Code?** This repo ships `/setup`, `/setup-slack`, and
+> `/uninstall` skills. Run **`/setup`** to have it drive the deploy with
+> you, then **`/setup-slack`** to wire a Slack workspace — and
+> **`/uninstall`** to tear it all down cleanly. The steps below are
 > exactly what those skills automate.
 
 ### 1. Prerequisites
