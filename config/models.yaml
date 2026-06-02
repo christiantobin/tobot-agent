@@ -12,4 +12,4 @@ agent: us.anthropic.claude-opus-4-7
 # Engaged-thread classifier ("is this user message addressed to the bot?").
 # Haiku is the right tool for sub-100-token classification. Don't swap unless
 # you've measured a quality gap.
-classifier: us.anthropic.claude-haiku-4-5-20251001
+classifier: us.anthropic.claude-haiku-4-5-20251001-v1:0

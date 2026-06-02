@@ -4,7 +4,11 @@ FROM --platform=linux/arm64 python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
-    PIP_NO_CACHE_DIR=1
+    PIP_NO_CACHE_DIR=1 \
+    # Slow/emulated arm64 builds (x86 hosts via qemu) make pip's default
+    # 15s socket timeout flaky on large wheels. Be patient + retry.
+    PIP_DEFAULT_TIMEOUT=120 \
+    PIP_RETRIES=10
 
 WORKDIR /app
 
