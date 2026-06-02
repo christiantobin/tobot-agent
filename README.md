@@ -63,6 +63,13 @@ Azure, GCP, SaaS. See `tools/aws-account-info/` and
 Fork this repo, clone your fork, and follow the steps below. The whole
 platform comes up with one `cdk deploy`.
 
+> **Using Claude Code?** This repo ships `/setup` and `/setup-slack`
+> skills. Open the repo in Claude Code and run **`/setup`** to have it
+> drive the deploy with you (prerequisites, `cdk deploy`, secrets, smoke
+> test, maintenance), then **`/setup-slack`** to wire a Slack workspace.
+> The steps below are exactly what those skills automate — follow them by
+> hand if you prefer.
+
 ### 1. Prerequisites
 
 | You need                                          | How to get it / check                                                                                                                                                                                                                   |
