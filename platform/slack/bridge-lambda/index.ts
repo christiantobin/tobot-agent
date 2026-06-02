@@ -8,6 +8,7 @@ import type { SQSEvent, SQSRecord } from 'aws-lambda';
 import { postMessage, addReaction, removeReaction } from './slack-client';
 import { stripBotMention, isExplicitConfirmation } from './confirmation';
 import { isProcessableEventType } from './event-filter';
+import { toSlackMrkdwn } from './format';
 
 const ENGAGED_TTL_SECONDS = 24 * 60 * 60;
 const ENGAGED_REPLY_SNIPPET_CHARS = 600;
@@ -158,7 +159,9 @@ async function processRecord(record: SQSRecord, botToken: string): Promise<void>
   }
 
   if (!replyText) replyText = '_(no response)_';
-  await postMessage({ botToken, channel, text: replyText, threadTs });
+  // The agent emits standard Markdown; Slack needs mrkdwn (single-asterisk
+  // bold, <url|text> links, • bullets). Translate before posting.
+  await postMessage({ botToken, channel, text: toSlackMrkdwn(replyText), threadTs });
   await swapReaction(DONE_REACTION);
 
   // Mark the thread as engaged so the verification Lambda will accept
