@@ -16,14 +16,14 @@
     "synth": "cdk synth"
   },
   "devDependencies": {
-    "@aws-cdk/aws-bedrock-agentcore-alpha": "^2.250.0-alpha.0",
+    "@aws-cdk/aws-bedrock-agentcore-alpha": "^2.257.0-alpha.0",
     "@aws-sdk/client-bedrock-agentcore": "^3.1058.0",
     "@types/aws-lambda": "^8.10.145",
     "@types/jest": "^30.0.0",
     "@types/node": "^25.9.1",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
-    "aws-cdk": "^2.140.0",
+    "aws-cdk": "^2.1125.0",
     "esbuild": "^0.28.0",
     "eslint": "^8.57.1",
     "eslint-config-prettier": "^9.1.2",
@@ -39,7 +39,7 @@
     "@aws-sdk/client-secrets-manager": "^3.1058.0",
     "@aws-sdk/client-sqs": "^3.1058.0",
     "@aws-sdk/lib-dynamodb": "^3.1058.0",
-    "aws-cdk-lib": "^2.140.0",
+    "aws-cdk-lib": "^2.257.0",
     "constructs": "^10.3.0",
     "yaml": "^2.5.0"
   }
