@@ -23,7 +23,7 @@ across your whole stack — AWS, Azure, GCP, SaaS.
 You    @tobot which log groups exist for the payments service?
 tobot  3 under /aws/lambda/payments-* — api, worker, reconciler
 You    and what account are we in?        ← no @mention; it follows the thread
-tobot  449633336138 (dev), running as the Tobot runtime role.
+tobot  123456789012 (dev), running as the Tobot runtime role.
 ```
 
 One `cdk deploy` brings up the agent, the Slack + webhook front doors,
