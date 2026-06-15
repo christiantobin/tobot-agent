@@ -20,7 +20,7 @@
     "@aws-sdk/client-bedrock-agentcore": "^3.1064.0",
     "@types/aws-lambda": "^8.10.162",
     "@types/jest": "^30.0.0",
-    "@types/node": "^25.9.2",
+    "@types/node": "^25.9.3",
     "@typescript-eslint/eslint-plugin": "^7.18.0",
     "@typescript-eslint/parser": "^7.18.0",
     "aws-cdk": "^2.1126.0",
