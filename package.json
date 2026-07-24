@@ -39,7 +39,7 @@
     "@aws-sdk/client-secrets-manager": "^3.1064.0",
     "@aws-sdk/client-sqs": "^3.1064.0",
     "@aws-sdk/lib-dynamodb": "^3.1064.0",
-    "aws-cdk-lib": "^2.258.0",
+    "aws-cdk-lib": "^2.262.0",
     "constructs": "^10.3.0",
     "yaml": "^2.5.0"
   }
